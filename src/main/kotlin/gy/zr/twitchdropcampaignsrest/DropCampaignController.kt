@@ -1,6 +1,7 @@
 package gy.zr.twitchdropcampaignsrest
 
 import org.springframework.data.repository.CrudRepository
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
@@ -11,6 +12,8 @@ import javax.persistence.*
 data class Game(
     @Id val id: Int,
     val name: String,
+    @Column(name = "box_art_url")
+    val boxArtUrl: String
 )
 
 @Entity
@@ -32,6 +35,7 @@ interface DropCampaignRepository : CrudRepository<DropCampaign, String> {
 }
 
 @RestController
+@CrossOrigin(origins = ["http://localhost:4200"])
 class DropCampaignController(val repository: DropCampaignRepository) {
 
     @GetMapping("/all")
