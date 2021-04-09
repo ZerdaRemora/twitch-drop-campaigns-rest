@@ -1,5 +1,6 @@
 package gy.zr.twitchdropcampaignsrest
 
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.CrudRepository
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,8 +31,8 @@ data class DropCampaign(
 )
 
 interface DropCampaignRepository : CrudRepository<DropCampaign, String> {
-
     fun findAllByStatusIs(status: String): List<DropCampaign>
+    fun findAllByStatusIs(status: String, sort: Sort): List<DropCampaign>
 }
 
 @RestController
@@ -45,16 +46,16 @@ class DropCampaignController(val repository: DropCampaignRepository) {
 
     @GetMapping("/active")
     fun activeCampaigns(): List<DropCampaign> {
-        return repository.findAllByStatusIs("ACTIVE")
+        return repository.findAllByStatusIs("ACTIVE", Sort.by(Sort.Direction.DESC, "started")) // Recently started first
     }
 
     @GetMapping("/upcoming")
     fun upcomingCampaigns(): List<DropCampaign> {
-        return repository.findAllByStatusIs("UPCOMING")
+        return repository.findAllByStatusIs("UPCOMING", Sort.by(Sort.Direction.ASC, "started")) // Soon to start first
     }
 
     @GetMapping("/expired")
     fun expiredCampaigns(): List<DropCampaign> {
-        return repository.findAllByStatusIs("EXPIRED")
+        return repository.findAllByStatusIs("EXPIRED", Sort.by(Sort.Direction.DESC, "ended")) // Recently ended first
     }
 }
