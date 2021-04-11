@@ -133,3 +133,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,intellij,gradle,dotenv
 
 HELP.md
+
+*.p12
