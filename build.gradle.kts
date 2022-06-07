@@ -38,3 +38,15 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.bootBuildImage {
+    imageName = "ghcr.io/zerdaremora/${project.name}:${project.version}"
+    isPublish = true
+    docker {
+        publishRegistry {
+            url = "https://ghcr.io"
+            username = System.getenv("DOCKER_USERNAME")
+            password = System.getenv("DOCKER_PASSWORD")
+        }
+    }
+}

@@ -1,4 +1,4 @@
-name: Java Build
+name: Docker Build and Push
 
 on:
   push:
@@ -30,14 +30,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Gradle build
-        run: ./gradlew build -x test
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2.2.3
-        with:
-          name: rest-jar
-          path: build/libs
+      - name: Gradle bootBuildImage
+        run: ./gradlew bootBuildImage
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup Gradle Cache
         run: |
